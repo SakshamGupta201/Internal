@@ -1,17 +1,18 @@
 package com.saksham.demo.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.saksham.demo.model.Role;
-import com.saksham.demo.model.Task;
 import com.saksham.demo.model.User;
 import com.saksham.demo.repository.RoleRepository;
 import com.saksham.demo.repository.TaskRepository;
 import com.saksham.demo.repository.UserRepository;
-
-import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
