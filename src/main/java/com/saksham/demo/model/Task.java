@@ -8,38 +8,50 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Project")
 public class Task {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
     private Long id;
-    
+
     @NotEmpty(message = "{task.name.not.empty}")
     private String name;
-    
+
     @NotEmpty(message = "{task.description.not.empty}")
     @Column(length = 1200)
     @Size(max = 1200, message = "{task.description.size}")
     private String description;
-    
+
     // @NotEmpty(message = "{task.timeSpent.not.empty}")
     private int timeSpent = 0;
-    
+
     @NotNull(message = "{task.date.not.null}")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
-    
+
     private boolean isCompleted;
-    
+
     private String creatorName;
     @ManyToOne
     @JoinColumn(name = "OWNER_ID")
     private User owner;
+
+    @ManyToMany(mappedBy = "taskOwns")
+    private List<User> owns;
+
+    public List<User> getOwns() {
+        return owns;
+    }
+
+    public void setOwns(List<User> owns) {
+        this.owns = owns;
+    }
 
     public long daysLeftUntilDeadline(LocalDate date) {
         return ChronoUnit.DAYS.between(LocalDate.now(), date);
@@ -60,7 +72,7 @@ public class Task {
             @NotEmpty @Size(max = 1200) String description,
             @NotNull LocalDate date,
             boolean isCompleted,
-            String creatorName,int timeSpent) {
+            String creatorName, int timeSpent) {
         this.name = name;
         this.description = description;
         this.date = date;
@@ -74,7 +86,7 @@ public class Task {
             @NotNull LocalDate date,
             boolean isCompleted,
             String creatorName,
-            User owner,int timeSpent) {
+            User owner, int timeSpent) {
         this.name = name;
         this.description = description;
         this.date = date;

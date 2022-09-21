@@ -32,6 +32,12 @@ public class User {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
     private List<Task> tasksOwned;
 
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_task",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
+    private List<User> taskOwns;
     
 
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -157,5 +163,13 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, email, name, password, photo, tasksOwned, roles);
+    }
+
+    public List<User> getTaskOwns() {
+        return taskOwns;
+    }
+
+    public void setTaskOwns(List<User> taskOwns) {
+        this.taskOwns = taskOwns;
     }
 }
